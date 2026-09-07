@@ -14,9 +14,12 @@ o SimProject—, con cuál y en qué semestre.
 Siete pregrados: Ingeniería Industrial, de Sistemas, Multimedia, Agroindustrial, Biomédica,
 Electrónica y Biológica.
 
-**54 asignaturas** de los siete programas pueden trabajarse hoy con un simulador — 7 de
-aplicación directa y 47 como apoyo al curso — con **14 simuladores distintos**, de primer a
-noveno semestre.
+**16 asignaturas** de los siete programas pueden trabajarse hoy con un simulador — 12 de
+aplicación directa y 4 como apoyo al curso — con **8 simuladores distintos**, concentradas entre
+cuarto y séptimo semestre.
+
+Cifras basadas únicamente en columnas objetivas del Excel (Grado de ajuste + SimAgile/SimProject
+Alta-Media) — ver `CLAUDE.md` para el detalle de la metodología y su historial de corrección.
 
 ## Estructura — 16 slides
 
