@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompanyGame en la [[UNIVERSIDAD_CORTA]]</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Open+Sans:wght@400;600&display=swap');
+
+        :root {
+            --primary: #16AAE2;
+            --primary-dark: #0E73B8;
+            --primary-light: #5FC7EE;
+            --amber: #0F86C9;
+            --accent-green: #2FA37A;
+            --accent-teal: #0F8CA8;
+            --accent-purple: #6E7FC4;
+            --accent-red: #D9636E;
+            --dark: #33383D;
+            --light: #F0F9FD;
+            --white: #ffffff;
+            --cg-blue: #0A5488;
+            --gray: #737170;
+            --gray-mid: #989998;
+            --gray-light: #CECBCB;
+            --shadow: 0 10px 40px rgba(0,0,0,0.15);
+            --shadow-hover: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #16AAE2 0%, #0E73B8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.6s ease;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            overflow: hidden;
+            min-height: 85vh;
+        }
+
+        .slide.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .slide-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--amber) 100%);
+            color: var(--white);
+            padding: 40px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 50%;
+        }
+
+        .slide-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            padding-right: 150px;
+        }
+
+        .slide-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4em;
+            font-weight: 300;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            padding-right: 150px;
+        }
+        @media (max-width: 768px) { .slide-header h1, .slide-header h2 { padding-right: 0; } }
+
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 50px;
+            font-size: 5em;
+            font-weight: 800;
+            opacity: 0.18;
+            font-family: 'Montserrat', sans-serif;
+            z-index: 0;
+        }
+
+        .slide-content { padding: 40px 50px; }
+
+        /* ===== NAV ===== */
+        .nav-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--dark);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.3);
+        }
+        .nav-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(22,170,226,0.5);
+        }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .slide-counter { color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.1em; }
+
+        .progress-bar {
+            position: fixed; top: 0; left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--amber), var(--accent-green));
+            transition: width 0.4s ease;
+            z-index: 1001;
+        }
+
+        /* ===== CARDS ===== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        /* Cuatro tarjetas en una sola línea */
+        .card-grid.cols4 { grid-template-columns: repeat(4, 1fr); }
+        .card-grid.cols4 .card { padding: 24px 22px; }
+        .card-grid.cols4 .card h3 { font-size: 1.18em; }
+        @media (max-width: 1024px) { .card-grid.cols4 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .card-grid.cols4 { grid-template-columns: 1fr; } }
+        .card {
+            background: linear-gradient(145deg, #ffffff, #F0F9FD);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 100px; height: 100px;
+            background: linear-gradient(135deg, transparent 50%, rgba(22,170,226,0.06) 50%);
+            border-radius: 0 0 0 100%;
+        }
+        .card.bd-amber { border-left-color: var(--amber); }
+        .card.bd-green { border-left-color: var(--accent-green); }
+        .card.bd-teal { border-left-color: var(--accent-teal); }
+        .card.bd-purple { border-left-color: var(--accent-purple); }
+        .card.bd-red { border-left-color: var(--accent-red); }
+        .card-icon { font-size: 2.5em; margin-bottom: 15px; }
+        .card h3 { font-family: 'Montserrat', sans-serif; font-size: 1.3em; color: var(--dark); margin-bottom: 12px; }
+        .card p { color: #666; line-height: 1.7; font-size: 0.95em; }
+        .card p strong { color: var(--dark); }
+
+        /* ===== TABLE ===== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .data-table thead { background: linear-gradient(135deg, var(--primary), var(--amber)); color: var(--white); }
+        .data-table th { padding: 16px 20px; text-align: left; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px; }
+        .data-table td { padding: 14px 20px; border-bottom: 1px solid #DBE7EE; font-size: 0.95em; }
+        .data-table tbody tr:hover { background: #E4F4FC; }
+        .data-table tbody tr:nth-child(even) { background: #F7FBFE; }
+
+        /* ===== ACCORDION (FAQ) ===== */
+        .accordion { margin-top: 25px; }
+        .accordion-item { margin-bottom: 12px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+        .accordion-header {
+            background: linear-gradient(135deg, #F0F9FD, #ffffff);
+            padding: 18px 25px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-weight: 600; color: var(--dark);
+            transition: all 0.3s ease; border-left: 4px solid var(--primary-light);
+        }
+        .accordion-header:hover { background: linear-gradient(135deg, #D7EDF9, #F0F9FD); border-left-color: var(--primary); }
+        .accordion-header .icon { font-size: 1.3em; transition: transform 0.3s ease; color: var(--primary); }
+        .accordion-item.active .accordion-header .icon { transform: rotate(180deg); }
+        .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: var(--white); }
+        .accordion-item.active .accordion-body { max-height: 500px; }
+        .accordion-content { padding: 20px 25px; color: #555; line-height: 1.8; }
+        .accordion-content strong { color: var(--primary-dark); }
+
+        /* ===== VALUE CHAIN ===== */
+        .value-chain { display: flex; justify-content: space-between; align-items: center; margin: 40px 0; flex-wrap: wrap; gap: 15px; }
+        .chain-box {
+            flex: 1; min-width: 150px;
+            background: linear-gradient(135deg, var(--primary), var(--amber));
+            color: var(--white); padding: 25px 20px; border-radius: 14px; text-align: center;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+        .chain-box.cb-amber { background: linear-gradient(135deg, #8A8887, #6B6968); }
+        .chain-box.cb-green { background: linear-gradient(135deg, var(--accent-green), #227D5E); }
+        .chain-box.cb-teal { background: linear-gradient(135deg, var(--accent-teal), #0A6C84); }
+        .chain-box:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(22,170,226,0.3); }
+        .chain-box .cb-emoji { font-size: 1.8em; display: block; margin-bottom: 8px; }
+        .chain-arrow { font-size: 2em; color: var(--primary); animation: float 2s ease infinite; }
+
+        /* ===== PERCENTAGE BARS / FACTORS ===== */
+        .factor-block { margin: 22px 0; }
+        .factor-block .pct-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.05em; color: var(--dark); }
+        .factor-block .pct-label .pct-num { color: var(--primary-dark); }
+        .percentage-track { height: 26px; background: #DBE7EE; border-radius: 13px; overflow: hidden; position: relative; }
+        .percentage-fill {
+            height: 100%; border-radius: 13px;
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 12px;
+            color: var(--white); font-weight: 700; font-size: 0.85em;
+            transition: width 1.4s ease; width: 0;
+        }
+        .slide.active .percentage-fill { width: var(--target-width); }
+        .factor-block .pct-desc { color: #666; font-size: 0.92em; line-height: 1.6; margin-top: 8px; }
+        .fill-orange { background: linear-gradient(90deg, #5FC7EE, #0E73B8); }
+        .fill-amber  { background: linear-gradient(90deg, #A9A7A6, #737170); }
+        .fill-green  { background: linear-gradient(90deg, #5CC8A0, #227D5E); }
+        .fill-teal   { background: linear-gradient(90deg, #45B4CC, #0A6C84); }
+        .fill-purple { background: linear-gradient(90deg, #909EDA, #4E5FA3); }
+        .fill-red    { background: linear-gradient(90deg, #E38089, #B0424F); }
+        .fill-blue   { background: linear-gradient(90deg, #1687C9, #0A5488); }
+
+        /* ===== BADGES ===== */
+        .badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.8em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin: 3px; }
+        .badge-orange { background: #D7EDF9; color: #0A5488; }
+        .badge-green { background: #D8F1E8; color: #1B6E51; }
+        .badge-teal { background: #D2EDF4; color: #0A6685; }
+        .badge-amber { background: #E8E6E5; color: #5C5A59; }
+        .badge-purple { background: #E3E7F7; color: #4E5FA3; }
+        .badge-red { background: #FADCDF; color: #A63A47; }
+
+        /* ===== TWO COLUMN ===== */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; }
+
+        /* ===== HERO (PORTADA) ===== */
+        .hero {
+            text-align: center; padding: 70px 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--amber) 55%, #0A5488 100%);
+            color: var(--white); position: relative; overflow: hidden;
+        }
+        .hero .hero-logo { font-size: 4.5em; margin-bottom: 10px; animation: float 3s ease infinite; }
+        .hero h1 { font-family: 'Montserrat', sans-serif; font-size: 3.5em; font-weight: 800; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.15); }
+        .hero .subtitle { font-size: 1.3em; opacity: 0.95; margin-bottom: 22px; }
+        .hero .hero-context { max-width: 760px; margin: 0 auto 26px; font-size: 1.02em; line-height: 1.7; opacity: 0.95; }
+        .hero-badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+        .hero-badge { background: rgba(255,255,255,0.22); backdrop-filter: blur(10px); padding: 10px 25px; border-radius: 30px; font-weight: 600; font-size: 0.9em; }
+        .hero-brand { margin-top: 40px; display: flex; gap: 22px; align-items: center; justify-content: center; flex-wrap: wrap; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.9em; opacity: 0.95; }
+        .hero-brand .cg { letter-spacing: 3px; font-weight: 800; }
+
+        /* ===== SEGMENT ROWS ===== */
+        .seg-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 12px; margin-bottom: 10px; }
+        .seg-row .seg-emoji { font-size: 1.7em; }
+        .seg-row strong { font-family: 'Montserrat', sans-serif; color: var(--dark); }
+        .seg-row small { color: #777; }
+
+        /* ===== FACTOR ACCORDION ===== */
+        .factor-accordion { margin: 25px 0; }
+        .factor-item { margin-bottom: 15px; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: all 0.3s ease; }
+        .factor-item:hover { box-shadow: 0 6px 25px rgba(0,0,0,0.12); }
+        .factor-header { padding: 20px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.1em; color: var(--white); transition: all 0.3s ease; }
+        .factor-header .factor-tag { background: rgba(255,255,255,0.28); padding: 6px 16px; border-radius: 20px; font-size: 0.85em; font-weight: 800; }
+        .factor-header .factor-icon { font-size: 1.3em; transition: transform 0.3s ease; }
+        .factor-item.active .factor-header .factor-icon { transform: rotate(180deg); }
+        .factor-orange { background: linear-gradient(135deg, #16AAE2, #0E73B8); }
+        .factor-amber  { background: linear-gradient(135deg, #8A8887, #6B6968); }
+        .factor-green  { background: linear-gradient(135deg, #2FA37A, #227D5E); }
+        .factor-teal   { background: linear-gradient(135deg, #0F8CA8, #0A6C84); }
+        .factor-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; background: var(--white); }
+        .factor-item.active .factor-body { max-height: 400px; }
+        .factor-content { padding: 22px 25px; color: #555; line-height: 1.8; }
+        .factor-content strong { color: var(--dark); }
+
+        /* ===== FICHA POR PROGRAMA (slides 5-9) ===== */
+        .fk-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 24px; }
+        @media (max-width: 900px) { .fk-row { grid-template-columns: repeat(2, 1fr); } }
+        .fk {
+            background: linear-gradient(145deg, #ffffff, #F0F9FD);
+            border-radius: 14px; padding: 20px 22px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+        }
+        .fk-green { border-left-color: var(--accent-green); }
+        .fk-amber { border-left-color: var(--gray); }
+        .fk-blue  { border-left-color: var(--cg-blue); }
+        .fk-n { display: block; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 2.3em; line-height: 1; color: var(--primary-dark); }
+        .fk-green .fk-n { color: #1B6E51; }
+        .fk-amber .fk-n { color: #5C5A59; }
+        .fk-blue .fk-n  { color: var(--cg-blue); }
+        .fk-l { display: block; margin-top: 9px; color: #777; font-size: 0.86em; line-height: 1.35; }
+        .fk-h { font-family: 'Montserrat', sans-serif; font-size: 1.28em; margin-bottom: 4px; }
+        .fk-h-green { color: var(--accent-green); }
+        .fk-h-amber { color: var(--gray); }
+        .ficha-tbl td { font-size: 0.92em; }
+        .ficha-tbl td:first-child { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #9BA9B4; text-align: center; }
+        .ficha-tbl .badge { font-size: 0.68em; padding: 4px 10px; }
+
+        /* ===== MÉTODOS / TIMELINE DE IMPLEMENTACIÓN ===== */
+        .method { border-radius: 18px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.12); margin-bottom: 34px; }
+        .method.m-orange { --m1:#16AAE2; --m2:#0E73B8; --msoft:rgba(22,170,226,0.07); }
+        .method.m-green  { --m1:#2FA37A; --m2:#227D5E; --msoft:rgba(47,163,122,0.10); }
+        .method.m-teal   { --m1:#0F8CA8; --m2:#0A6C84; --msoft:rgba(15,140,168,0.09); }
+        .method.m-purple { --m1:#6E7FC4; --m2:#4E5FA3; --msoft:rgba(110,127,196,0.08); }
+        .method-head { background: linear-gradient(135deg, var(--m1), var(--m2)); color:#fff; padding: 24px 34px; }
+        .method-head h3 { font-family:'Montserrat'; font-size:1.55em; font-weight:800; display:flex; align-items:center; gap:12px; margin-bottom:4px; }
+        .method-head .method-quote { font-style:italic; opacity:0.93; font-size:1em; }
+        .method-body { background:#f7f8fb; padding: 28px 34px 34px; }
+        .tl-title { text-align:center; font-family:'Montserrat'; font-weight:800; font-size:1.5em; color:var(--m2); margin-bottom:6px; }
+        .tl-sub { text-align:center; font-style:italic; color:#666; margin-bottom:6px; }
+
+        .tl { position:relative; padding: 58px 8px 52px; }
+        .tl-track { display:flex; align-items:center; justify-content:space-between; position:relative; }
+        .tl-track::before { content:''; position:absolute; left:1.5%; right:1.5%; top:50%; height:4px; transform:translateY(-50%); border-radius:2px; z-index:0; background: linear-gradient(90deg, var(--m1), var(--m2)); }
+        .tl-node { position:relative; z-index:1; display:flex; align-items:center; justify-content:center; }
+        .tl-week { width:24px; height:24px; border-radius:50%; background:#fff; border:4px solid var(--m2); box-shadow:0 2px 6px rgba(0,0,0,0.12); }
+        .tl-act { width:50px; height:50px; border-radius:50%; background: linear-gradient(135deg, var(--m1), var(--m2)); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.3em; box-shadow:0 4px 14px rgba(0,0,0,0.22); }
+        .tl-label { position:absolute; left:50%; transform:translateX(-50%); width:100px; text-align:center; font-family:'Montserrat'; font-weight:700; font-size:0.66em; text-transform:uppercase; letter-spacing:0.5px; line-height:1.25; color:#54606e; }
+        .tl-label.below { top: calc(100% + 10px); }
+        .tl-label.above { bottom: calc(100% + 10px); }
+        .tl-label.wk { color:#7a8694; font-weight:600; }
+
+        .alt-sub { font-family:'Montserrat'; font-weight:800; color:var(--m2); margin: 22px 0 2px; display:flex; align-items:center; gap:8px; font-size:1.05em; }
+        .tl-auto { border:2px solid var(--m2); border-radius:14px; background:var(--msoft); padding:16px 24px; display:flex; align-items:center; gap:26px; margin-top:6px; }
+        .tl-auto-lbl { font-family:'Montserrat'; font-weight:800; color:var(--m2); font-size:1.05em; line-height:1.2; white-space:nowrap; }
+        .tl-auto-pins { display:flex; justify-content:space-around; flex:1; gap:10px; flex-wrap:wrap; }
+        .tl-auto-pin { display:flex; flex-direction:column; align-items:center; gap:8px; }
+        .tl-auto-pin .pin-lbl { font-family:'Montserrat'; font-weight:700; font-size:0.6em; text-transform:uppercase; letter-spacing:0.5px; color:var(--m2); text-align:center; line-height:1.2; }
+        .tl-auto-pin .pin-c { width:42px; height:42px; border-radius:50%; background: linear-gradient(135deg, var(--m1), var(--m2)); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1em; box-shadow:0 3px 10px rgba(0,0,0,0.18); }
+        @media (max-width: 768px) {
+            .tl-auto { flex-direction:column; gap:14px; }
+            .tl-label { font-size:0.55em; width:74px; }
+        }
+
+        /* ===== CARACTERÍSTICAS DE MÉTODO ===== */
+        .features { background:#fff; border:2px solid var(--m2); border-radius:14px; padding:22px 26px; margin-top:24px; }
+        .features h4 { font-family:'Montserrat'; font-weight:800; color:var(--m2); font-size:1.15em; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+        .features ul { list-style:none; padding:0; }
+        .features li { position:relative; padding:7px 0 7px 28px; color:#444; line-height:1.5; }
+        .features li::before { content:'✓'; position:absolute; left:2px; color:var(--m2); font-weight:800; }
+        .features .ideal { margin-top:14px; background:var(--msoft); border-radius:10px; padding:12px 16px; color:#445; line-height:1.5; }
+        .features .ideal strong { color:var(--m2); }
+
+        /* ===== FACTOR COLORS / CONTENT (Valor de la Compañía) ===== */
+        .factor-purple { background: linear-gradient(135deg, #6E7FC4, #4E5FA3); }
+        .factor-red    { background: linear-gradient(135deg, #E38089, #B0424F); }
+        .factor-blue   { background: linear-gradient(135deg, #1687C9, #0A5488); }
+        .factor-item.active .factor-body { max-height: 680px; }
+        .factor-content p { margin-bottom: 10px; }
+        .factor-content p:last-child { margin-bottom: 0; }
+        .factor-consejo { background:#F0F9FD; border-left:4px solid var(--amber); border-radius:8px; padding:12px 16px; margin-top:6px; color:#555; line-height:1.6; }
+        .factor-consejo strong { color: var(--primary-dark); }
+
+        /* ===== CUADRO DE MANDO (tarjetas de informe) ===== */
+        .cm-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; margin-top:26px; }
+        @media (max-width: 1024px) { .cm-grid { grid-template-columns: repeat(2, 1fr); } }
+        /* Masonry por columnas: empaqueta tarjetas de distinta altura sin huecos (recomendado para el Cuadro de Mando) */
+        .cm-masonry { column-count:3; column-gap:24px; margin-top:26px; }
+        .cm-masonry .cm-card { display:inline-block; width:100%; margin:0 0 24px; break-inside:avoid; -webkit-column-break-inside:avoid; }
+        @media (max-width:1024px){ .cm-masonry { column-count:2; } }
+        @media (max-width:560px){ .cm-masonry { column-count:1; } }
+        .cm-card { background:#fff; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.1); border:1px solid #eee; overflow:hidden; display:flex; flex-direction:column; transition: box-shadow .3s, transform .3s; }
+        .cm-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+        .cm-card .cm-img { padding:14px 14px 0; }
+        .cm-card .cm-img img { width:100%; border-radius:8px; border:1px solid #e6e6e6; cursor:zoom-in; display:block; transition: transform .3s ease; }
+        .cm-card .cm-img img:hover { transform: scale(1.01); }
+        .cm-card .cm-body { padding:16px 22px 22px; display:flex; flex-direction:column; flex:1; }
+        .cm-titlerow { display:flex; align-items:center; gap:10px; }
+        .cm-titlerow h3 { font-family:'Montserrat'; font-size:1.18em; color:var(--dark); display:flex; align-items:center; gap:8px; }
+        .cm-badge { margin-left:auto; background:#D7EDF9; color:#0A5488; font-family:'Montserrat'; font-weight:700; font-size:0.66em; text-transform:uppercase; letter-spacing:0.5px; padding:5px 12px; border-radius:20px; white-space:nowrap; }
+        .cm-desc { color:#666; line-height:1.6; font-size:0.9em; margin:10px 0 14px; border-bottom:1px dashed #e2e8ee; padding-bottom:14px; }
+        .cm-why-label { align-self:flex-start; display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--primary),var(--amber)); color:#fff; font-family:'Montserrat'; font-weight:700; font-size:0.7em; text-transform:uppercase; letter-spacing:0.5px; padding:8px 16px; border-radius:20px; box-shadow:0 3px 10px rgba(22,170,226,0.3); }
+        .cm-why-text { background:#F0F9FD; border-radius:10px; padding:12px 16px; margin-top:10px; color:#555; line-height:1.6; font-size:0.88em; }
+        .cm-why-text strong { color:var(--primary-dark); }
+        @media (max-width: 768px) { .cm-grid { grid-template-columns: 1fr; } }
+
+        /* ===== DECISIONES (bloques numerados) ===== */
+        .dec-block { border-radius:16px; overflow:hidden; box-shadow:0 6px 24px rgba(0,0,0,0.1); margin-bottom:26px; border:1px solid #eee; }
+        .dec-head { display:flex; align-items:center; gap:18px; padding:20px 28px; background:linear-gradient(135deg, var(--primary), var(--amber)); color:#fff; }
+        .dec-num { flex-shrink:0; width:46px; height:46px; border-radius:12px; background:rgba(255,255,255,0.25); display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-weight:800; font-size:1.4em; }
+        .dec-head h3 { font-family:'Montserrat',sans-serif; font-size:1.3em; margin-bottom:3px; }
+        .dec-head p { font-size:0.92em; opacity:0.95; line-height:1.45; }
+        .dec-shot { padding:22px 26px 26px; background:#f7f9fb; text-align:center; }
+        .dec-shot img { width:100%; max-width:920px; border-radius:10px; border:1px solid #e0e6ea; box-shadow:0 4px 16px rgba(0,0,0,0.1); cursor:zoom-in; transition:transform .3s ease; }
+        .dec-shot img:hover { transform:scale(1.01); }
+
+        /* ===== GALLERY + LIGHTBOX ===== */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; margin-top: 28px; }
+        .shot {
+            border-radius: 14px; overflow: hidden; background: #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); border: 1px solid #eee;
+            cursor: zoom-in; transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .shot:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+        .shot img { width: 100%; height: auto; display: block; background: #fff; }
+        .shot figcaption {
+            padding: 14px 18px; font-family: 'Montserrat', sans-serif; font-weight: 600;
+            color: var(--dark); font-size: 0.95em;
+            border-top: 3px solid var(--primary); background: #F0F9FD;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .shot figcaption .zoom-hint { margin-left: auto; font-size: 0.78em; color: var(--primary); font-weight: 700; }
+
+        .lightbox {
+            position: fixed; inset: 0; background: rgba(6,20,28,0.94);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 3000; padding: 30px; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease; cursor: zoom-out;
+        }
+        .lightbox.active { opacity: 1; visibility: visible; }
+        .lightbox img { max-width: 96%; max-height: 86vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); transform: scale(0.96); transition: transform 0.3s ease; }
+        .lightbox.active img { transform: scale(1); }
+        .lightbox-caption { color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 600; margin-top: 18px; font-size: 1.05em; text-align: center; }
+        .lightbox-close { position: fixed; top: 22px; right: 32px; color: #fff; font-size: 2.4em; cursor: pointer; opacity: 0.8; transition: all 0.2s ease; line-height: 1; }
+        .lightbox-close:hover { opacity: 1; transform: scale(1.15); }
+
+        /* ===== CARTELERA (estilo BusinessGlobal) ===== */
+        .cartelera-container { text-align: center; margin: 30px 0; }
+        .cartelera-img { max-width: 100%; height: auto; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); transition: transform 0.3s ease; cursor: zoom-in; }
+        .cartelera-img:hover { transform: scale(1.02); }
+        .cartelera-caption { margin-top: 15px; font-style: italic; color: #666; font-size: 0.95em; }
+
+        /* ===== RESERVED AVATAR BOX ===== */
+        .reserved {
+            margin: 30px auto 0; max-width: 760px; border: 2px dashed var(--primary-light); border-radius: 16px;
+            background: #F0F9FD; padding: 30px; text-align: center; color: #5A6B78;
+        }
+        .reserved h3 { font-family: 'Montserrat', sans-serif; color: var(--primary-dark); margin-bottom: 8px; }
+        .reserved code { background: #CFE9F8; padding: 2px 8px; border-radius: 6px; color: var(--primary-dark); font-size: 0.9em; }
+
+        /* ===== INGRESO / PHONE ===== */
+        .plataforma-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 20px; }
+        .plataforma-steps { list-style: none; padding: 0; margin-top: 10px; }
+        .plataforma-steps li { display: flex; gap: 16px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid #DBE7EE; font-size: 1.05em; color: #444; line-height: 1.5; }
+        .plataforma-steps li:last-child { border-bottom: none; }
+        .plataforma-steps .step-num { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--amber)); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+        .plataforma-steps strong { color: var(--primary-dark); }
+        .ingreso-title { font-family:'Montserrat',sans-serif; font-weight:800; font-size:2em; color:var(--primary); line-height:1.1; margin-bottom:6px; }
+        .ingreso-title::after { content:''; display:block; width:120px; height:5px; background:var(--primary); border-radius:3px; margin-top:14px; }
+        .ingreso-list { list-style:none; padding:0; margin-top:28px; counter-reset: ing; }
+        .ingreso-list li { counter-increment: ing; position:relative; padding:14px 0 14px 42px; font-size:1.15em; color:#444; line-height:1.45; border-bottom:1px solid #DBE7EE; }
+        .ingreso-list li:last-child { border-bottom:none; }
+        .ingreso-list li::before { content: counter(ing) "."; position:absolute; left:2px; top:14px; font-family:'Montserrat',sans-serif; font-weight:800; color:var(--primary); font-size:1.05em; }
+        .ingreso-list a { color:var(--primary-dark); font-weight:700; text-decoration:none; word-break:break-all; }
+        .ingreso-list a:hover { text-decoration:underline; }
+        .phone-logo small.tagline { letter-spacing:2px; color:#9aa; font-size:0.4em; }
+        .phone-mock { width: 290px; max-width: 100%; margin: 0 auto; background: #1a1a1a; border-radius: 42px; padding: 14px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); animation: float 4s ease infinite; }
+        .phone-screen { background: #fff; border-radius: 30px; overflow: hidden; padding: 8px 26px 38px; position: relative; }
+        .phone-notch { width: 130px; height: 24px; background: #1a1a1a; border-radius: 0 0 16px 16px; margin: 0 auto 28px; }
+        .phone-logo { text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--primary); letter-spacing: 2px; font-size: 1.15em; }
+        .phone-logo small { display: block; font-size: 0.42em; letter-spacing: 3px; color: #b0b0b0; font-weight: 600; margin-top: 2px; }
+        .phone-title { text-align: center; font-size: 0.95em; color: #444; margin: 22px 0; font-weight: 600; border-top: 1px solid #eee; padding-top: 22px; }
+        .phone-field { background: #f4f4f4; border-radius: 8px; padding: 13px 14px; font-size: 0.8em; color: #9a9a9a; margin-bottom: 15px; }
+        .phone-btn { background: var(--primary); color: #fff; text-align: center; padding: 13px; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 1px; font-size: 0.85em; margin-top: 6px; }
+        .phone-recover { text-align: center; font-size: 0.72em; color: var(--primary); margin-top: 18px; }
+
+        /* ===== CLOSING ===== */
+        .closing { text-align: center; padding: 70px 40px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: #fff; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .closing .closing-emoji { font-size: 3.4em; margin-bottom: 16px; }
+        .closing h1 { font-family: 'Montserrat', sans-serif; font-size: 3.4em; color: #fff; margin-bottom: 14px; }
+        .closing p { color: rgba(255,255,255,0.92); font-size: 1.15em; max-width: 640px; margin: 0 auto 12px; line-height: 1.7; }
+        .closing .thanks-sub { font-size: 1.3em; opacity: 0.92; margin-bottom: 38px; }
+        .contact-box { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.28); border-radius:16px; padding:24px 46px; margin: 4px auto 44px; backdrop-filter: blur(6px); }
+        .contact-line { font-size:1.12em; margin:9px 0; display:flex; align-items:center; gap:10px; justify-content:center; }
+        .contact-line a { color:#fff; text-decoration:none; }
+        .contact-line a:hover { text-decoration:underline; }
+        .contact-label { font-family:'Montserrat', sans-serif; font-weight:700; font-size:0.82em; letter-spacing:1.4px; text-transform:uppercase; opacity:0.85; margin-bottom:6px; }
+        .contact-sep { height:1px; background:rgba(255,255,255,0.28); margin:20px 0 16px; }
+        .sdn-logo { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:30px; }
+        .sdn-mark { width:48px; height:48px; border-radius:50%; border:3px solid #fff; display:flex; align-items:center; justify-content:center; font-size:1.5em; }
+        .sdn-text { text-align:left; line-height:1.08; }
+        .sdn-main { font-family:'Montserrat',sans-serif; font-weight:800; font-size:1.5em; letter-spacing:3px; display:block; }
+        .sdn-sub { font-family:'Montserrat',sans-serif; font-weight:500; letter-spacing:6px; font-size:0.72em; display:block; opacity:0.95; }
+        .sdn-col { font-size:0.62em; letter-spacing:3px; display:block; opacity:0.9; text-transform:uppercase; }
+        .sdn-img-box { display:inline-block; margin-bottom:30px; }
+        .sdn-img { width:300px; max-width:80%; height:auto; display:block; margin:0 auto; }
+        .contact-line .wa-icon { width:22px; height:22px; fill:#fff; flex-shrink:0; }
+        .brand-pill { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); padding:11px 24px; border-radius:30px; font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.95em; }
+
+        /* ===== INTRO OVERLAY ===== */
+        .intro-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 2000; transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .intro-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .intro-overlay .intro-logo { margin-bottom: 16px; animation: float 3s ease infinite; }
+        .cover-photo { width: 440px; max-width: 84%; height: auto; display: block; margin: 0 auto; border-radius: 18px; border: 4px solid rgba(255,255,255,0.9); box-shadow: 0 16px 40px rgba(0,0,0,0.30); }
+        .hero .hero-logo .cover-photo { width: 380px; }
+        .brand-logo { width: 330px; max-width: 70%; height: auto; display: block; margin: 0 auto 4px; }
+        .hero-brand-logo { width: 260px; margin-bottom: 10px; }
+        .intro-overlay h1 { font-family: 'Montserrat', sans-serif; font-size: 4em; color: var(--white); font-weight: 800; margin-bottom: 14px; text-align: center; }
+        .intro-overlay p { color: rgba(255,255,255,0.85); font-size: 1.3em; margin-bottom: 40px; text-align: center; padding: 0 20px; }
+        .start-btn {
+            background: var(--white); color: var(--primary-dark); border: none;
+            padding: 18px 50px; border-radius: 40px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.2em;
+            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .start-btn:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #E4F4FC; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        @media (max-width: 768px) {
+            .two-col, .plataforma-cols { grid-template-columns: 1fr; }
+            .slide-header h1 { font-size: 1.8em; }
+            .hero h1 { font-size: 2.2em; }
+            .value-chain { flex-direction: column; }
+            .chain-arrow { transform: rotate(90deg); }
+            .slide-content { padding: 30px 25px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== INTRO OVERLAY ===================== -->
+<!-- El logo blanco de SDN (assets/logo-sdn.png) va sobre el degradado cyan de la marca. -->
+<div class="intro-overlay" id="introOverlay">
+    <div class="intro-logo">
+    <img class="brand-logo" src="assets/logo-sdn.png" alt="Simuladores de Negocios Colombia">
+    </div>
+    <h1>CompanyGame en la [[UNIVERSIDAD_CORTA]]</h1>
+    <p>Mapeo curricular de la [[FACULTAD]]</p>
+    <button class="start-btn" onclick="startPresentation()">▶ INICIAR PRESENTACIÓN</button>
+</div>
+
+<div class="progress-bar" id="progressBar" style="width: 0%"></div>
+
+<div class="presentation-container">
+
+
+    <!-- ===================== SLIDE 1: PORTADA + CONTEXTO ===================== -->
+    <div class="slide active" id="slide1">
+        <div class="hero">
+            <div class="hero-logo">
+            <img class="brand-logo hero-brand-logo" src="assets/logo-sdn.png" alt="Simuladores de Negocios Colombia">
+            </div>
+            <h1>CompanyGame en la [[UNIVERSIDAD_CORTA]]</h1>
+            <p class="subtitle">Mapeo curricular de la [[FACULTAD]]</p>
+            <p class="hero-context">
+                Revisamos los planes de estudio de los [[N_PROGRAMAS_TXT]] pregrados de la [[FACULTAD_CORTA]] frente al catálogo CompanyGame, asignatura por asignatura. <strong>[[N_ENCAJE]] asignaturas pueden trabajarse hoy con un simulador</strong>, con <strong>[[N_SIMULADORES]] simuladores</strong> del catálogo al que ya tienen acceso — de primer semestre a último, en los [[N_PROGRAMAS_TXT]] programas. Esta presentación muestra exactamente cuáles son, programa por programa.
+            </p>
+            <div class="hero-badges">
+                <span class="hero-badge">✅ [[N_ENCAJE]] asignaturas con simulador</span>
+                <span class="hero-badge">🎯 [[N_PERFECTO]] sin cambiar el temario</span>
+                <span class="hero-badge">🎮 [[N_SIMULADORES]] simuladores del catálogo</span>
+                <span class="hero-badge">🎓 5 pregrados</span>
+            </div>
+            <div class="hero-brand">
+                <span class="cg">C O M P A N Y G A M E</span>
+                <span>•</span>
+                <span>Simuladores de Negocios Colombia</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================== SLIDE 2: CARTELERA + AVATARES (FIJO) ===================== -->
+    <div class="slide" id="slide2">
+        <div class="slide-header">
+            <h1>🎮 Cartelera de Simuladores</h1>
+            <h2>El portafolio CompanyGame y sus avatares de IA</h2>
+            <div class="slide-number"></div>
+        </div>
+        <div class="slide-content">
+            <p style="color:#555;line-height:1.7;">CompanyGame ofrece <strong style="color:var(--primary-dark);">41 simuladores</strong> de negocio organizados por nivel de dificultad (1 a 7) y área de conocimiento. De ese catálogo, <strong style="color:var(--primary-dark);">[[N_SIMULADORES]] simuladores</strong> ya tienen una asignatura donde encajan en la [[FACULTAD_CORTA]]. Los simuladores que más aparecen en el mapeo son <strong>ContaTrainer</strong>, <strong>Corbatul</strong>, <strong>Business Strategy</strong>, <strong>Business Chef</strong> y <strong>Fitness Gym</strong>.</p>
+
+            <div class="cartelera-container">
+                <img class="cartelera-img" src="assets/cartelera.jpg" alt="Cartelera de simuladores CompanyGame" loading="lazy" onclick="openLightbox('assets/cartelera.jpg','Cartelera completa de simuladores CompanyGame — Niveles 1 a 7 por área de negocio')">
+                <div class="cartelera-caption">Cartelera completa de simuladores CompanyGame — Niveles 1 a 7 por área de negocio</div>
+            </div>
+
+            <div class="cartelera-container" id="avatares-container">
+                <img class="cartelera-img" src="assets/avatares.png" alt="Avatares de IA de los simuladores CompanyGame" loading="lazy"
+                     onclick="openLightbox('assets/avatares.png','Avatares de IA implementados en los simuladores CompanyGame')"
+                     onerror="this.closest('#avatares-container').style.display='none'; var p=document.getElementById('avatares-pending'); if(p) p.style.display='block';">
+                <div class="cartelera-caption">Avatares de IA implementados en los simuladores CompanyGame</div>
+            </div>
+
+            <div class="reserved" id="avatares-pending" style="display:none;">
+                <h3>🤖 Avatares de IA — pendiente de archivo</h3>
+                <p>Guarda la imagen de avatares como <code>assets/avatares.png</code> en la carpeta del proyecto y aparecerá aquí automáticamente, con el mismo estilo que la cartelera.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================== SLIDE 3: LO QUE YA SE PUEDE HACER ===================== -->
+    <div class="slide" id="slide3">
+        <div class="slide-header">
+            <h1>✅ Lo que ya se puede hacer hoy</h1>
+            <h2>[[N_ENCAJE]] asignaturas de los [[N_PROGRAMAS_TXT]] pregrados pueden trabajarse con simuladores del catálogo actual</h2>
+            <div class="slide-number"></div>
+        </div>
+        <div class="slide-content">
+            <p style="color:#555;line-height:1.7;">Revisamos el plan de estudios de los <strong style="color:var(--primary-dark);">[[N_PROGRAMAS_TXT]] pregrados</strong> de la [[FACULTAD_CORTA]] y buscamos, para cada asignatura, el simulador del catálogo que mejor la acompaña. No es una intuición ni una muestra: es una revisión asignatura por asignatura. Y no requiere comprar nada nuevo — todo sale del catálogo al que la [[FACULTAD_CORTA]] ya tiene acceso.</p>
+
+            <div class="card-grid cols4">
+                <div class="card bd-teal">
+                    <div class="card-icon">🎯</div>
+                    <h3>[[N_ENCAJE]] asignaturas</h3>
+                    <p>Pueden apoyarse hoy en un simulador, repartidas entre los [[N_PROGRAMAS_TXT]] pregrados y <strong>de primer a último semestre</strong>.</p>
+                </div>
+                <div class="card bd-green">
+                    <div class="card-icon">✅</div>
+                    <h3>[[N_PERFECTO]] de aplicación directa</h3>
+                    <p>El simulador cubre el <strong>núcleo</strong> de la asignatura: se usa sin modificar el temario ni el sistema de evaluación.</p>
+                </div>
+                <div class="card bd-amber">
+                    <div class="card-icon">🧩</div>
+                    <h3>[[N_PARCIAL]] como apoyo al curso</h3>
+                    <p>El simulador aporta la operación viva y se integra a lo que el docente ya enseña. <strong>El docente conserva el control del curso.</strong></p>
+                </div>
+                <div class="card bd-purple">
+                    <div class="card-icon">🎮</div>
+                    <h3>[[N_SIMULADORES]] simuladores</h3>
+                    <p>Del catálogo CompanyGame, con nivel <strong>N1 a N7</strong>: hay uno adecuado tanto para primer semestre como para las asignaturas de síntesis.</p>
+                </div>
+            </div>
+
+            <!-- VARIABLE · el hallazgo que ordena la propuesta. En la USC fueron las asignaturas
+                 transversales; en otra universidad puede ser otro. Si no hay un hallazgo
+                 claro, borra este acordeón entero y también el slide de transversales. -->
+            <div class="factor-accordion" style="margin-top:35px;">
+                <div class="factor-item active">
+                    <div class="factor-header factor-orange" onclick="toggleFactor(this)">
+                        <span>💡 [[TITULO_HALLAZGO]]</span>
+                        <span class="factor-icon">▼</span>
+                    </div>
+                    <div class="factor-body">
+                        <div class="factor-content">
+                            [[PARRAFO_HALLAZGO]]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================== SLIDE 4: ALCANCE POR PROGRAMA ===================== -->
+    <div class="slide" id="slide4">
+        <div class="slide-header">
+            <h1>🎓 Alcance por programa</h1>
+            <h2>Los [[N_PROGRAMAS_TXT]] pregrados tienen asignaturas listas para empezar — las [[N_PROGRAMAS_TXT]] fichas siguientes las detallan una por una</h2>
+            <div class="slide-number"></div>
+        </div>
+        <div class="slide-content">
+            <p style="color:#555;line-height:1.7;">Ningún programa se queda fuera y ninguno depende de un solo simulador. En los [[N_PROGRAMAS_TXT]], el recorrido arranca en <strong style="color:var(--primary-dark);">primer semestre</strong> y llega hasta las asignaturas de síntesis del final de la carrera.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Programa</th>
+                        <th style="text-align:center;">Asignaturas con simulador</th>
+                        <th style="text-align:center;">Aplicación directa</th>
+                        <th style="text-align:center;">Como apoyo al curso</th>
+                        <th style="text-align:center;">Simuladores</th>
+                        <th style="text-align:center;">Semestres</th>
+                    </tr>
+                </thead>
+                <tbody>
+<!-- VARIABLE · una fila por programa, ordenadas de más a menos asignaturas.
+     badge-green para los de arriba, badge-teal para los de abajo. Sin porcentajes:
+     el criterio editorial es no dar el denominador (ver CLAUDE.md). -->
+                    <tr><td><strong>[[PROGRAMA_1]]</strong></td><td style="text-align:center;"><span class="badge badge-green">[[P1_ENCAJE]]</span></td><td style="text-align:center;">[[P1_PERFECTO]]</td><td style="text-align:center;">[[P1_PARCIAL]]</td><td style="text-align:center;">[[P1_SIMULADORES]]</td><td style="text-align:center;">[[P1_SEMESTRES]]</td></tr>
+                    <tr><td><strong>[[PROGRAMA_2]]</strong></td><td style="text-align:center;"><span class="badge badge-green">[[P2_ENCAJE]]</span></td><td style="text-align:center;">[[P2_PERFECTO]]</td><td style="text-align:center;">[[P2_PARCIAL]]</td><td style="text-align:center;">[[P2_SIMULADORES]]</td><td style="text-align:center;">[[P2_SEMESTRES]]</td></tr>
+                    <tr><td><strong>[[PROGRAMA_3]]</strong></td><td style="text-align:center;"><span class="badge badge-teal">[[P3_ENCAJE]]</span></td><td style="text-align:center;">[[P3_PERFECTO]]</td><td style="text-align:center;">[[P3_PARCIAL]]</td><td style="text-align:center;">[[P3_SIMULADORES]]</td><td style="text-align:center;">[[P3_SEMESTRES]]</td></tr>
+                    <tr style="background:#E4F4FC;"><td><strong>Total [[FACULTAD_CORTA]]</strong></td><td style="text-align:center;"><strong>[[N_ENCAJE]]</strong></td><td style="text-align:center;"><strong>[[N_PERFECTO]]</strong></td><td style="text-align:center;"><strong>[[N_PARCIAL]]</strong></td><td style="text-align:center;"><strong>[[N_SIMULADORES]]</strong></td><td style="text-align:center;"><strong>[[RANGO_SEMESTRES]]</strong></td></tr>
+                </tbody>
+            </table>
+
+            <div class="card-grid" style="margin-top:34px;">
+                <div class="card bd-green">
+                    <div class="card-icon">🚀</div>
+                    <h3>Todos pueden empezar ya</h3>
+                    <p>Cada programa tiene entre <strong>[[MIN_PERFECTO]] y [[MAX_PERFECTO]] asignaturas</strong> donde el simulador entra sin tocar el temario. No hace falta rediseñar nada para arrancar.</p>
+                </div>
+                <div class="card bd-teal">
+                    <div class="card-icon">🧭</div>
+                    <h3>De primero a último semestre</h3>
+                    <p>En los [[N_PROGRAMAS_TXT]] pregrados el recorrido cubre toda la carrera: el estudiante no vive un evento aislado, sino una <strong>progresión</strong>.</p>
+                </div>
+                <div class="card bd-purple">
+                    <div class="card-icon">🤝</div>
+                    <h3>Un solo proyecto, no [[N_PROGRAMAS_TXT]]</h3>
+                    <p>Los programas comparten asignaturas y simuladores, así que la capacitación y el diseño se hacen <strong>una vez para toda la [[FACULTAD_CORTA]]</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================== BLOQUE REPETIBLE · FICHA POR PROGRAMA =====================
+
+     DUPLICA este <div class="slide"> completo una vez por programa y numera los id
+     correlativos (slideFicha1, slideFicha2, slideFicha3…). Son el eje de la reunión: unos 2 minutos
+     cada una. Las tablas van ordenadas por semestre. El .slide-number se numera solo.
+
+     Convención de color, la misma del slide 3:
+        verde  = encaje perfecto (entra sin tocar el temario)
+        ámbar  = encaje parcial  (el docente adapta)
+     Badges de nivel del simulador: badge-green N1-2 · badge-teal N3-4 ·
+     badge-amber N4-5 · badge-orange N5 · badge-purple N6-7
+     ================================================================================= -->
+    <div class="slide" id="slideFicha1">
+        <div class="slide-header">
+            <h1>🎓 [[PROGRAMA]]</h1>
+            <h2>Ficha [[FICHA_N]] de [[N_PROGRAMAS_NUM]] · las asignaturas del programa que hoy pueden trabajarse con un simulador</h2>
+            <div class="slide-number"></div>
+        </div>
+        <div class="slide-content">
+            <div class="fk-row">
+                <div class="fk"><span class="fk-n">[[PROG_ENCAJE]]</span><span class="fk-l">asignaturas con simulador</span></div>
+                <div class="fk fk-green"><span class="fk-n">[[PROG_PERFECTO]]</span><span class="fk-l">entran sin modificar el temario</span></div>
+                <div class="fk fk-amber"><span class="fk-n">[[PROG_PARCIAL]]</span><span class="fk-l">como apoyo al curso</span></div>
+                <div class="fk fk-blue"><span class="fk-n">[[PROG_SIMULADORES]]</span><span class="fk-l">simuladores del catálogo</span></div>
+            </div>
+
+            <div class="two-col" style="margin-top:34px;">
+                <div>
+                    <h3 class="fk-h fk-h-green">✅ Encaje perfecto · [[PROG_PERFECTO]]</h3>
+                    <p style="color:#777;font-size:0.92em;">El simulador entra sin modificar el temario</p>
+                    <table class="data-table ficha-tbl" style="margin-top:14px;">
+                        <thead><tr><th style="width:62px;">Sem.</th><th>Asignatura</th><th>Simulador</th></tr></thead>
+                        <tbody>
+<!-- VARIABLE · una fila por asignatura, ordenadas por semestre. Del Excel del mapeo. -->
+                            <tr><td>[[SEM]]</td><td>[[ASIGNATURA]]</td><td>[[SIMULADOR]] <span class="badge badge-green">[[NIVEL]]</span></td></tr>
+                            <tr><td>[[SEM]]</td><td>[[ASIGNATURA]]</td><td>[[SIMULADOR]] <span class="badge badge-green">[[NIVEL]]</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3 class="fk-h fk-h-amber">🧩 Encaje parcial · [[PROG_PARCIAL]]</h3>
+                    <p style="color:#777;font-size:0.92em;">El simulador se ajusta al curso y el docente conserva el control</p>
+                    <table class="data-table ficha-tbl" style="margin-top:14px;">
+                        <thead><tr><th style="width:62px;">Sem.</th><th>Asignatura</th><th>Simulador</th></tr></thead>
+                        <tbody>
+<!-- VARIABLE · una fila por asignatura, ordenadas por semestre. Del Excel del mapeo. -->
+                            <tr><td>[[SEM]]</td><td>[[ASIGNATURA]]</td><td>[[SIMULADOR]] <span class="badge badge-teal">[[NIVEL]]</span></td></tr>
+                            <tr><td>[[SEM]]</td><td>[[ASIGNATURA]]</td><td>[[SIMULADOR]] <span class="badge badge-teal">[[NIVEL]]</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="factor-accordion" style="margin-top:36px;">
+                <div class="factor-item active">
+                    <div class="factor-header factor-orange" onclick="toggleFactor(this)">
+                        <span>💡 Lo que gana el programa</span>
+                        <span class="factor-icon">▼</span>
+                    </div>
+                    <div class="factor-body">
+                        <div class="factor-content">[[PARRAFO_PROGRAMA]]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================== SLIDE · ASIGNATURAS TRANSVERSALES =====================
+     CONDICIONAL. Este slide solo tiene sentido si al superponer las fichas aparecen
+     asignaturas que se repiten en TODOS los programas con encaje perfecto. Es el
+     argumento de escala («no son N proyectos, es uno»). Si en esta universidad no se
+     repiten, BORRA el slide entero — no lo fuerces.
+     ============================================================================= -->
+    <div class="slide" id="slideTransversales">
+        <div class="slide-header">
+            <h1>⚓ Las [[N_TRANSVERSALES_TXT]] asignaturas transversales</h1>
+            <h2>Están en los [[N_PROGRAMAS_TXT]] programas y en los [[N_PROGRAMAS_TXT]] entran sin modificar el temario: una sola implementación alcanza a toda la [[FACULTAD_CORTA]]</h2>
+            <div class="slide-number"></div>
+        </div>
+        <div class="slide-content">
+            <p style="color:#555;line-height:1.7;">Al superponer las [[N_PROGRAMAS_TXT]] fichas aparece lo que hace <strong style="color:var(--primary-dark);">rentable</strong> el proyecto: [[N_TRANSVERSALES_TXT]] asignaturas se repiten en los [[N_PROGRAMAS_TXT]] pregrados y en todas ellas el simulador cubre el núcleo del temario. <strong>Se capacita una vez y quedan cubiertos los [[N_PROGRAMAS_TXT]] programas</strong> — no son [[N_PROGRAMAS_TXT]] proyectos, es uno.</p>
+
+            <div class="value-chain">
+                <div class="chain-box cb-green"><span class="cb-emoji">🚪</span>[[HITO_1]]<br><small style="font-weight:400;opacity:0.9;">[[HITO_1_DESC]]</small></div>
+                <div class="chain-arrow">➜</div>
+                <div class="chain-box"><span class="cb-emoji">💰</span>[[HITO_2]]<br><small style="font-weight:400;opacity:0.9;">[[HITO_2_DESC]]</small></div>
+                <div class="chain-arrow">➜</div>
+                <div class="chain-box cb-teal"><span class="cb-emoji">🏁</span>[[HITO_3]]<br><small style="font-weight:400;opacity:0.9;">[[HITO_3_DESC]]</small></div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr><th>Asignatura</th><th>Simulador</th><th style="text-align:center;">Semestre</th><th style="text-align:center;">Programas</th><th style="text-align:center;">Grado</th></tr>
+                </thead>
+                <tbody>
+<!-- VARIABLE · una fila por asignatura transversal. -->
+                    <tr><td><strong>[[ASIGNATURA]]</strong></td><td>[[SIMULADOR]] <span class="badge badge-green">[[NIVEL]]</span></td><td style="text-align:center;">[[SEM]]</td><td style="text-align:center;">[[N_PROGRAMAS_NUM]] de [[N_PROGRAMAS_NUM]]</td><td style="text-align:center;"><span class="badge badge-green">Perfecto</span></td></tr>
+                </tbody>
+            </table>
+
+            <div class="card-grid" style="margin-top:34px;">
+                <div class="card bd-green">
+                    <div class="card-icon">🤝</div>
+                    <h3>Una capacitación, [[N_PROGRAMAS_TXT]] programas</h3>
+                    <p>Los docentes de las mismas [[N_TRANSVERSALES_TXT]] asignaturas, de los [[N_PROGRAMAS_TXT]] pregrados, se capacitan <strong>juntos</strong> en los mismos [[N_TRANSVERSALES_TXT]] simuladores. Un solo calendario, un solo costo.</p>
+                </div>
+                <div class="card bd-teal">
+                    <div class="card-icon">🧭</div>
+                    <h3>Un arco completo de formación</h3>
+                    <p>El estudiante conoce el simulador en primer semestre, lo reencuentra en presupuesto y cierra con una simulación estratégica avanzada. <strong>Continuidad, no eventos aislados.</strong></p>
+                </div>
+                <div class="card bd-purple">
+                    <div class="card-icon">📐</div>
+                    <h3>Un solo diseño instruccional</h3>
+                    <p>La guía docente, la rúbrica y el esquema de evaluación se diseñan una vez y se reutilizan en toda la [[FACULTAD_CORTA]].</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================== SLIDE · LOS TRES MODELOS DE USO DOCENTE (FIJO) ===================== -->
+    <div class="slide" id="slideModelos">
+        <div class="slide-header">
+            <h1>🎚️ Tres formas de llevar el simulador al curso</h1>
+            <h2>El simulador se ajusta al curso que el docente ya dicta — no al revés</h2>
+            <div class="slide-number"></div>
+        </div>
+        <div class="slide-content">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Modelo</th><th>Qué es</th><th>Aplica a</th><th style="text-align:center;">Duración</th><th style="text-align:center;">Peso en la nota</th><th style="text-align:center;">Rol del docente</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>A</strong> · El simulador <em>es</em> el curso</td><td>La partida ya trae la estructura del semestre; cada ronda cubre una unidad temática</td><td>Encaje perfecto</td><td style="text-align:center;">8–10 semanas</td><td style="text-align:center;">30–40 %</td><td style="text-align:center;"><span class="badge badge-orange">Guía la partida</span></td></tr>
+                    <tr><td><strong>B</strong> · El simulador es un <em>módulo</em></td><td>Se inserta en las sesiones que el docente ya tiene programadas para su tema</td><td>Encaje parcial</td><td style="text-align:center;">3–5 sesiones</td><td style="text-align:center;">15–25 %</td><td style="text-align:center;"><span class="badge badge-amber">Activa el módulo</span></td></tr>
+                    <tr><td><strong>C</strong> · El simulador es la <em>fuente de datos</em></td><td>No se corre competencia: se usan los reportes de una partida ya jugada como caso base del curso</td><td>Encaje parcial</td><td style="text-align:center;">1–2 sesiones</td><td style="text-align:center;">10–15 %</td><td style="text-align:center;"><span class="badge badge-green">Recibe los reportes</span></td></tr>
+                </tbody>
+            </table>
+
+            <div class="factor-accordion" style="margin-top:35px;">
+                <div class="factor-item">
+                    <div class="factor-header factor-orange" onclick="toggleFactor(this)">
+                        <span>🅰 Modelo A — El simulador es el curso</span>
+                        <span class="factor-tag">8–10 semanas · 30–40 %</span>
+                        <span class="factor-icon">▼</span>
+                    </div>
+                    <div class="factor-body">
+                        <div class="factor-content">
+                            La partida <strong>ya trae la estructura del semestre</strong>: cada ronda de decisiones corresponde a una unidad temática del programa, así que no hay que crear material nuevo. Es el modelo natural para las <strong>[[N_PERFECTO]] asignaturas de aplicación directa</strong>, donde el simulador ya cubre el núcleo del temario.<br><br>
+                            El docente guía la partida y acompaña a los equipos; el simulador aporta la estructura. <strong>Resultado</strong>: la experiencia formativa más completa y la evidencia de aprendizaje más rica, con el menor trabajo de diseño para el docente.
+                        </div>
+                    </div>
+                </div>
+                <div class="factor-item">
+                    <div class="factor-header factor-amber" onclick="toggleFactor(this)">
+                        <span>🅱 Modelo B — El simulador es un módulo</span>
+                        <span class="factor-tag">3–5 sesiones · 15–25 %</span>
+                        <span class="factor-icon">▼</span>
+                    </div>
+                    <div class="factor-body">
+                        <div class="factor-content">
+                            El simulador se inserta en un <strong>bloque acotado de sesiones</strong>, dentro del curso que el docente ya dicta. El docente activa únicamente las decisiones que corresponden a su temática y el resto queda en piloto automático — el resto del programa sigue exactamente igual.<br><br>
+                            Basta con reservar 3 a 5 sesiones; la capacitación es breve. <strong>Resultado</strong>: aplicación práctica del concepto sin tocar el resto del curso. Es el punto de entrada habitual para un docente que nunca ha usado un simulador.
+                        </div>
+                    </div>
+                </div>
+                <div class="factor-item active">
+                    <div class="factor-header factor-green" onclick="toggleFactor(this)">
+                        <span>🅲 Modelo C — El simulador es la fuente de datos</span>
+                        <span class="factor-tag">1–2 sesiones · 10–15 %</span>
+                        <span class="factor-icon">▼</span>
+                    </div>
+                    <div class="factor-body">
+                        <div class="factor-content">
+                            <strong>No se corre competencia.</strong> Se toman los reportes que ya produjo una partida —estados financieros, informes de mercado, indicadores de planta— y se usan como <strong>caso base</strong> del curso, tal como el docente ya lo dicta.<br><br>
+                            El docente no opera el simulador: solo recibe los reportes. <strong>Resultado</strong>: datos realistas, coherentes entre sí y generados por los propios estudiantes. <strong>Es la clave de la expansión</strong>: una partida ya corrida puede alimentar varias asignaturas sin trabajo adicional para nadie.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================== SLIDE · EVIDENCIA DE APRENDIZAJE (semi-fijo) ===================== -->
+    <div class="slide" id="slideEvidencia">
+        <div class="slide-header">
+            <h1>🎯 Evidencia de aprendizaje</h1>
+            <h2>Cada partida deja registro trazable — del tipo que la acreditación pide</h2>
+            <div class="slide-number"></div>
+        </div>
+        <div class="slide-content">
+            <p style="color:#555;line-height:1.7;">Cada partida registra <strong>decisiones tomadas, resultados obtenidos y evolución entre rondas</strong>, de forma individual y por equipo. Es evidencia trazable que una evaluación tradicional rara vez produce con ese nivel de detalle.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr><th>Simulador</th><th>Resultado de aprendizaje que evidencia</th><th>Evidencia evaluable</th></tr>
+                </thead>
+                <tbody>
+<!-- SEMI-FIJO · esta tabla es el catálogo CompanyGame, no depende de la universidad.
+     DEJA solo los simuladores que aparecen en el mapeo de esta institución y borra el resto. -->
+                    <tr><td><strong>ContaTrainer</strong></td><td>Reconoce, mide y registra hechos económicos bajo el marco normativo vigente</td><td>Libro diario y estados financieros del estudiante</td></tr>
+                    <tr><td><strong>Corbatul</strong></td><td>Diagnostica la situación financiera y decide inversión, financiación y capital de trabajo</td><td>Indicadores por ronda + memoria de justificación</td></tr>
+                    <tr><td><strong>Coffee Time / MarketGame</strong></td><td>Formula un mix de marketing y anticipa la respuesta del mercado</td><td>Plan de mercadeo vs. participación obtenida</td></tr>
+                    <tr><td><strong>T-Shirt / Sunny Day</strong></td><td>Toma decisiones integrales de dirección en un entorno competitivo</td><td>Bitácora de decisiones + resultado del ciclo</td></tr>
+                    <tr><td><strong>FOCUS</strong></td><td>Diseña, ejecuta e interpreta investigación de mercados</td><td>Informe de investigación + decisión sustentada</td></tr>
+                    <tr><td><strong>Business Chef / Fitness Gym</strong></td><td>Formula un plan de negocio viable y evalúa su sostenibilidad</td><td>Plan de negocio con proyección de flujos</td></tr>
+                    <tr><td><strong>Advisor Jr.</strong></td><td>Aplica el valor del dinero en el tiempo a decisiones de inversión y financiación</td><td>Cuadro de amortización + recomendación sustentada</td></tr>
+                    <tr><td><strong>Milk Factory</strong></td><td>Planifica producción, capacidad y calidad bajo restricciones</td><td>Plan de operaciones + indicadores de planta</td></tr>
+                    <tr><td><strong>Business Strategy</strong></td><td>Formula, ejecuta y ajusta una estrategia competitiva integral</td><td>Cuadro de mando + informe del ciclo</td></tr>
+                    <tr><td><strong>ESG Management</strong></td><td>Integra criterios ESG y sostiene el <em>trade-off</em> con la rentabilidad</td><td>Memoria de sostenibilidad con indicadores</td></tr>
+                    <tr><td><strong>Global 2020 / GlobalMarket</strong></td><td>Decide en entornos internacionales multimercado</td><td>Plan de internacionalización + riesgo país</td></tr>
+                    <tr><td><strong>SalesManager</strong></td><td>Gestiona fuerza de ventas: territorios, cuotas, incentivos</td><td>Plan comercial + cumplimiento de cuota</td></tr>
+                    <tr><td><strong>Trading</strong></td><td>Construye y gestiona un portafolio evaluando riesgo y retorno</td><td>Bitácora de operaciones + desempeño</td></tr>
+                    <tr><td><strong>InnovaTech</strong></td><td>Gestiona innovación y transformación digital de la idea al mercado</td><td>Portafolio de proyectos priorizado</td></tr>
+                </tbody>
+            </table>
+
+            <h3 style="font-family:'Montserrat',sans-serif;color:var(--primary-dark);font-size:1.3em;margin-top:38px;">Tres competencias genéricas quedan cubiertas de paso</h3>
+            <div class="card-grid" style="margin-top:18px;">
+                <div class="card bd-teal">
+                    <div class="card-icon">🔢</div>
+                    <h3>Razonamiento cuantitativo</h3>
+                    <p>Toda decisión del simulador se sustenta en datos: el estudiante lee, interpreta y proyecta cifras en cada ronda.</p>
+                </div>
+                <div class="card bd-green">
+                    <div class="card-icon">✍️</div>
+                    <h3>Comunicación escrita</h3>
+                    <p>El informe de decisiones y el <em>debrief</em> obligan a argumentar por escrito lo que el equipo decidió y por qué.</p>
+                </div>
+                <div class="card bd-purple">
+                    <div class="card-icon">🌍</div>
+                    <h3>Competencias ciudadanas</h3>
+                    <p>Los dilemas de sostenibilidad y gobernanza ponen al equipo a resolver tensiones entre rentabilidad e impacto.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===================== SLIDE · CIERRE (FIJO) ===================== -->
+    <div class="slide" id="slideCierre">
+        <div class="closing">
+            <h1>¡Gracias!</h1>
+            <p class="thanks-sub">[[FACULTAD]] · [[UNIVERSIDAD]]</p>
+            <p>Las <strong>[[N_ENCAJE]] asignaturas</strong> están identificadas, con su simulador y su semestre. [[LLAMADA_A_LA_ACCION]]</p>
+            <div class="contact-box">
+                <div class="contact-label">💼 Área Comercial</div>
+                <div class="contact-line">📧 <a href="mailto:ventas@simuladoresdenegocios.co">ventas@simuladoresdenegocios.co</a></div>
+                <div class="contact-line"><svg class="wa-icon" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> <a href="https://wa.me/573189756987">318 975 6987</a></div>
+                <div class="contact-sep"></div>
+                <div class="contact-label">🤝 Área de Fidelización</div>
+                <div class="contact-line">📧 <a href="mailto:fidelizacion@simuladoresdenegocios.co">fidelizacion@simuladoresdenegocios.co</a></div>
+                <div class="contact-line"><svg class="wa-icon" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> <a href="https://wa.me/573017903086">301 790 3086</a></div>
+            </div>
+            <div class="sdn-img-box" id="sdn-box">
+                <img class="sdn-img" src="assets/logo-sdn.png" alt="Simuladores de Negocios Colombia"
+                     onerror="document.getElementById('sdn-box').style.display='none'; document.getElementById('sdn-text-fallback').style.display='flex';">
+            </div>
+            <div class="sdn-logo" id="sdn-text-fallback" style="display:none;">
+                <span class="sdn-mark">↻</span>
+                <span class="sdn-text">
+                    <span class="sdn-main">SIMULADORES</span>
+                    <span class="sdn-sub">de negocios</span>
+                    <span class="sdn-col">Colombia</span>
+                </span>
+            </div>
+            <div class="brand-pill">🎓 CompanyGame en la [[UNIVERSIDAD_CORTA]]</div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">×</span>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<!-- ===================== NAV BAR ===================== -->
+<div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>◀ Anterior</button>
+    <div class="slide-counter" id="slideCounter">1 / 1</div>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente ▶</button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    /* Numeración automática: la portada y el cierre no llevan número; el resto se
+       numera 01, 02, 03… en orden de aparición. Así se pueden añadir o quitar fichas
+       por programa sin renumerar nada a mano. Un .slide-number con texto escrito se
+       respeta tal cual. */
+    (function numerarSlides() {
+        let n = 0;
+        document.querySelectorAll('.slide .slide-number').forEach(function (el) {
+            n++;
+            if (el.textContent.trim() === '') {
+                el.textContent = String(n).padStart(2, '0');
+            }
+        });
+        document.getElementById('slideCounter').textContent = '1 / ' + totalSlides;
+    })();
+
+    function startPresentation() {
+        document.getElementById('introOverlay').classList.add('hidden');
+        updateSlide();
+    }
+
+    function changeSlide(direction) {
+        const newSlide = currentSlide + direction;
+        if (newSlide >= 1 && newSlide <= totalSlides) {
+            currentSlide = newSlide;
+            updateSlide();
+        }
+    }
+
+    function updateSlide() {
+        slides.forEach(function(s) { s.classList.remove('active'); });
+        slides[currentSlide - 1].classList.add('active');
+
+        document.getElementById('prevBtn').disabled = currentSlide === 1;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        document.getElementById('nextBtn').innerHTML = currentSlide === totalSlides ? '✓ Finalizar' : 'Siguiente ▶';
+        document.getElementById('slideCounter').textContent = currentSlide + ' / ' + totalSlides;
+
+        const progress = (currentSlide / totalSlides) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleAccordion(header) { header.parentElement.classList.toggle('active'); }
+    function toggleFactor(header) { header.parentElement.classList.toggle('active'); }
+
+    // ===== LIGHTBOX =====
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    function openLightbox(src, caption) {
+        lightboxImg.src = src;
+        lightboxCaption.textContent = caption || '';
+        lightbox.classList.add('active');
+    }
+    function closeLightbox() { lightbox.classList.remove('active'); }
+
+    document.addEventListener('keydown', function(e) {
+        if (lightbox.classList.contains('active')) { if (e.key === 'Escape') closeLightbox(); return; }
+        if (document.getElementById('introOverlay').classList.contains('hidden') === false) return;
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+        else if (e.key === 'ArrowLeft') { changeSlide(-1); }
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; });
+    document.addEventListener('touchend', function(e) {
+        if (lightbox.classList.contains('active')) return;
+        const diff = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(diff) > 50) { changeSlide(diff > 0 ? 1 : -1); }
+    });
+</script>
+
+</body>
+</html>
