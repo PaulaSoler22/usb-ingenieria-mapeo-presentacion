@@ -1,212 +1,202 @@
 # CLAUDE.md — Simuladores para Ingeniería · Universidad de San Buenaventura
 
-> Documento de trabajo de **esta** presentación (no la plantilla, no el deck). Aquí está la
-> respuesta honesta a cualquier pregunta sobre metodología, cobertura o vacíos, aunque el deck
-> no la muestre.
+> Documento de trabajo de **esta** presentación. Aquí está la respuesta honesta a cualquier
+> pregunta sobre metodología, cobertura o vacíos, aunque el deck no la muestre.
 > Distribuidor: **Simuladores de Negocios Colombia** (Grupo Edutec).
 
-## ⚠️ Historial de corrección de metodología (leer antes de tocar nada)
+## ⚠️ Historial de correcciones (dos rondas — leer antes de tocar nada)
 
-La primera versión de este deck (7-sep-2026) usaba las columnas **Q-V** de cada hoja de programa
-("Tipo de simulador que se requeriría", **"Simulador recomendado"**, "Justificación de la
-recomendación", "Tipo de uso sugerido", "Prioridad comercial", "Origen") como fuente de las
-fichas. Esas columnas son **narrativas/especulativas**, generadas por un análisis de IA anterior
-sobre el Excel, y en al menos un caso contradecían a las columnas objetivas: la fila
-"Introducción a la Ingeniería" (Industrial) tenía **Grado de ajuste = "No encaja"** y
-SimVenture/SimAgile/SimProject en **"Baja"**, pero la columna "Simulador recomendado" sugería
-igualmente "T-Shirt / Sunny Day" — una recomendación sin respaldo en las columnas objetivas. El
-usuario detectó el error y pidió reconstruir el deck **ignorando por completo las columnas
-narrativas**.
+**Ronda 1 (7-sep-2026):** la primera versión usaba columnas narrativas del Excel ("Simulador
+recomendado") que en al menos un caso contradecían a las columnas objetivas (Grado de ajuste,
+SimAgile/SimProject). Se reconstruyó usando solo columnas objetivas: `Grado de ajuste` +
+`Simulador CompanyGame que encaja` + `Nivel CG`, y `SimAgile`/`SimProject` = Alta/Media. Resultado:
+16 asignaturas.
 
-**Metodología vigente (única fuente de verdad):**
+**Ronda 2 (8-sep-2026, esta versión):** el usuario pidió ir más allá de las columnas del Excel y
+**verificar cada asignatura contra su contenido curricular real**, buscando en la web (planes de
+estudio oficiales de la USB, y cuando no había microcurrículo público, el contenido estándar de
+esa asignatura en programas de ingeniería colombianos). Se usaron **7 agentes de investigación
+en paralelo** (uno o varios por programa), cada uno con instrucciones explícitas de ser
+escéptico y preferir "eliminar" o "parcial" antes que "perfecto" ante evidencia débil.
 
-| Columna | Uso |
-|---|---|
-| `Grado de ajuste` = "Encaje perfecto" | Asignatura de **aplicación directa**. Producto = columna `Simulador CompanyGame que encaja` + `Nivel CG`. |
-| `Grado de ajuste` = "Encaje parcial" | Asignatura de **apoyo al curso**. Mismo producto/nivel. |
-| `SimAgile` = "Alta" | Aplicación directa con **SimAgile** (sin nivel, no es parte del catálogo N1-N7). |
-| `SimAgile` = "Media" | Apoyo al curso con **SimAgile**. |
-| `SimProject` = "Alta" | Aplicación directa con **SimProject**. |
-| `SimProject` = "Media" | Apoyo al curso con SimProject (no se dio ningún caso en este Excel). |
-| `SimVenture` = cualquier valor | **Nunca se usa**, por instrucción explícita del usuario — la oferta es CompanyGame + SimAgile + SimProject. (De cualquier forma, SimVenture nunca tiene "Alta" en ningún programa de esta Facultad.) |
+**Hallazgo institucional importante:** dos agentes distintos, de forma independiente, encontraron
+el **plan de estudios oficial de la Facultad de Ingeniería en usbcali.edu.co** con los nombres,
+semestres y créditos exactos de varias asignaturas del Excel (Ingeniería de Sistemas SNIES 1349,
+Ingeniería Agroindustrial, Ingeniería Biológica, Ingeniería Electrónica, Ingeniería Multimedia,
+Ingeniería Biomédica, Ingeniería Industrial). **Esta Facultad es de la USB sede Cali** — no
+Bogotá, Medellín ni Cartagena. Fuentes: `https://usbcali.edu.co/wp-content/uploads/.../FI-PlanEs-*.pdf`
+(un PDF de malla curricular por programa). Ningún agente encontró microcurrículos públicos
+detallados (unidad por unidad) — solo las mallas con nombre/semestre/créditos. Donde no había
+microcurrículo, se usó el contenido estándar de esa asignatura en la disciplina en Colombia,
+declarado explícitamente como tal en cada veredicto.
 
-Este criterio se apoya en la propia hoja "Resumen Ejecutivo" del Excel (sección "7. Criterios de
-calificación"): la definición de **ALTA** para SimVenture/SimAgile/SimProject ("el objeto central
-de aprendizaje coincide con el dominio del simulador") es equivalente a **"Encaje perfecto"** del
-catálogo CompanyGame, y **MEDIA** ("cubre una parte de la asignatura") equivale a **"Encaje
-parcial"**. Ninguna cifra de esta versión del deck sale de una columna narrativa: **toda cifra es
-Grado de ajuste, Nivel CG, o SimAgile/SimProject Alta/Media, leídos directamente de la celda.**
+### Resultado de la verificación — qué cambió
 
-**Las columnas Q-V del Excel siguen ahí** (no se borraron, el usuario no lo pidió) pero **no se
-usan para nada en esta versión**. Si se editan o se llenan mejor en el futuro, esta sección debe
-revisarse antes de volver a usarlas.
+| Programa | Asignatura | Antes (ronda 1) | Después (ronda 2) | Motivo |
+|---|---|---|---|---|
+| Industrial | Gestión Estratégica Organizacional | Perfecto (Business21) | **Parcial** | El núcleo típico del curso es el marco analítico (FODA, Porter, BSC); Business21 simula la *ejecución* de decisiones, un complemento válido pero no el eje del curso |
+| Industrial | Ingeniería de Costos | Parcial (Corbatul) | Parcial (sin cambio) | Corbatul es gerencia financiera integral; el curso es costeo técnico — solo el componente de estructura de costos conecta genuinamente |
+| Industrial | Gestión de Operaciones | Parcial (MilkFactory) | **Perfecto** | El núcleo del curso (planeación de producción, capacidad, inventarios, calidad) coincide directamente con MilkFactory |
+| Industrial | Investigación de Mercados | Perfecto (Focus) | Perfecto (sin cambio) | — |
+| Industrial | Diseño de Productos y Servicios | Perfecto (SimAgile) | **ELIMINADA** | Es un curso de metodología de diseño de producto físico/servicio (QFD, prototipado, ciclo de vida), no de desarrollo de software — SimAgile no aplica |
+| Industrial | Gerencia de Proyectos de Ingeniería | Perfecto (SimProject) | Perfecto (sin cambio) | — |
+| Sistemas | Arquitectura de Software | Perfecto (SimAgile) | **ELIMINADA** | El curso es de patrones/estilos arquitectónicos y atributos de calidad; SimAgile simula el *proceso* Scrum, no decisiones de arquitectura técnica |
+| Sistemas | Cátedra de Emprendimiento | Perfecto (FitnessGym) | **Parcial** (por instrucción explícita del usuario) | La evidencia de contenido (Design Thinking, modelo de negocio, pitch) sostiene "perfecto", pero el usuario pidió dejarla en parcial de todas formas |
+| Sistemas | Gestión de Proyectos de Software | Perfecto (SimProject) | Perfecto (sin cambio) | — |
+| Agroindustrial | Mercadeo e Investigación de Mercados | Perfecto (Coffee Time) | **Parcial** | El curso combina mix de marketing (que sí cubre Coffee Time) con un componente de investigación de mercados/metodología que Coffee Time no cubre |
+| Agroindustrial | Gerencia de Proyectos de Ingeniería | Perfecto (SimProject) | Perfecto (sin cambio) | — |
+| Biológica | Ingeniería de Costos | Parcial (Corbatul) | **ELIMINADA** | Curso técnico de solo 2 créditos; Corbatul (gerencia financiera integral) excede ampliamente su alcance — a diferencia de Industrial, donde el curso tiene 3 créditos y mayor profundidad |
+| Biológica | Gerencia de Proyectos de Ingeniería | Perfecto (SimProject) | Perfecto (sin cambio) | — |
+| Multimedia | Gestión en Proyectos | Perfecto (SimProject) | Perfecto (sin cambio) | Confirmado que está clasificada institucionalmente junto a materias administrativas/jurídicas, no junto a las de diseño/audiovisual — es dirección de proyectos genérica |
+| Biomédica | Valoración de Proyectos | Perfecto (SimProject) | **Cambiada a Corbatul, Parcial** | "Valoración de Proyectos" es la nomenclatura estándar colombiana de evaluación financiera de inversiones (VPN, TIR, flujo de caja) — un simulador financiero (Corbatul) encaja mejor que uno de dirección de proyectos (SimProject) |
+| Electrónica | Prototipado de Soluciones Tecnológicas | Parcial (SimAgile) | **ELIMINADA** | El curso, por su ubicación curricular (junto a Circuitos, Instrumentación, Diseño de Ingeniería Electrónica), es de prototipado de hardware/mecatrónica — sin ninguna evidencia de contenido de Scrum/software |
+
+**Efecto neto: Ingeniería Electrónica se queda sin ninguna asignatura confirmada** — las otras
+dos filas de ese programa (Práctica Profesional, Diseño de Ingeniería Electrónica II) ya habían
+quedado excluidas en la ronda 1 por falta de producto asignado en el Excel. **Se eliminó la
+ficha completa de Electrónica del deck** — no se fuerza ninguna asignatura solo por completar
+las siete fichas.
+
+**SimAgile queda completamente fuera del deck**: de las tres asignaturas donde el Excel u
+otro análisis lo había sugerido, en las tres la verificación de contenido real lo descartó. Este
+es un cambio importante frente al pedido original del usuario ("ofrecer CompanyGame, SimAgile y
+SimProject") — hoy, con la evidencia disponible, **no hay ninguna asignatura de esta Facultad
+donde SimAgile encaje de verdad**. SimAgile sigue siendo parte del portafolio de Simuladores de
+Negocios Colombia y puede ofrecerse igual en la conversación comercial, pero no tiene respaldo
+curricular verificado en este mapeo — si en el futuro se consigue el microcurrículo real de
+alguna asignatura de software y sí hay encaje, se puede reincorporar.
 
 ## Qué es esta presentación
 
 Pieza **comercial** para directores de programa y decano de la **Facultad de Ingeniería** de la
-Universidad de San Buenaventura (USB) — siete pregrados: Ingeniería Industrial, de Sistemas,
-Multimedia, Agroindustrial, Biomédica, Electrónica y Biológica.
+Universidad de San Buenaventura, **sede Cali** — siete pregrados: Ingeniería Industrial, de
+Sistemas, Multimedia, Agroindustrial, Biomédica, Electrónica y Biológica.
 
 ⚠️ **No confundir con `usb-mapeo-presentacion/`**, presentación previa (ago-2026) para la
-**Facultad de Ciencias Económicas y Administrativas** de la misma universidad. Son dos
-facultades, dos Excel y dos decks independientes.
+**Facultad de Ciencias Económicas y Administrativas** de la USB seccional Medellín. Son dos
+facultades, dos seccionales, dos Excel y dos decks independientes.
 
-La oferta es **CompanyGame + SimAgile + SimProject**, sin SimVenture (instrucción explícita del
-usuario, ver arriba).
+## Metodología (vigente desde la ronda 1, ver arriba para la ronda 2)
 
-## Fuente de los datos
+Cada fila candidata del Excel salió de `Grado de ajuste` = Encaje perfecto/parcial (con el
+producto de `Simulador CompanyGame que encaja` + `Nivel CG`), o de `SimAgile`/`SimProject` =
+Alta/Media — nunca de las columnas narrativas Q-V del Excel. Sobre ese conjunto candidato
+(16 filas), la ronda 2 aplicó una segunda capa de verificación: investigación web del contenido
+real de cada asignatura, con veredicto final PERFECTO / PARCIAL / ELIMINAR. **Ninguna asignatura
+de este deck se sostiene solo en el nombre o en una columna del Excel: las 12 que quedan tienen,
+además, evidencia (oficial o disciplinar general) de que su contenido real coincide con lo que
+simula el producto asignado.**
 
-`San Buenaventura Facultad ingeniería.xlsx` (en esta misma carpeta). El usuario reabrió y
-resguardó el archivo el 7-sep-2026 ~16:42 sin cambios de contenido (se verificó byte a byte
-contra la versión anterior: ninguna celda cambió, solo metadatos internos de Excel). Hojas:
-Resumen Ejecutivo, Industrial, Sistemas, Multimedia, Agroindustrial, Biomédica, Electrónica,
-Biológica, Priorización, Desarrollos Propios, Recomendaciones, Catálogo CompanyGame.
+SimVenture sigue sin usarse en ningún punto del deck, por instrucción explícita del usuario.
 
-Leído descomprimiendo el `.xlsx` como ZIP y parseando el XML de cada hoja con un script de Node
-(no hay Python en el equipo — ver memoria `leer-xlsx-sin-python`). El primer intento de este
-script tenía un bug de alineación de columnas por atributos `t=`/`s=` en distinto orden, ya
-corregido; los datos de esta versión se verificaron celda por celda contra capturas de pantalla
-del propio usuario antes de reconstruir el deck.
-
-## Cifras del deck (públicas) — metodología objetiva
+## Cifras del deck (públicas)
 
 | | |
 |---|---|
-| Asignaturas con simulador | **16** |
-| Encaje perfecto (aplicación directa) | **12** |
-| Encaje parcial (apoyo al curso) | **4** |
-| Simuladores distintos | **8** (6 del catálogo CompanyGame + SimAgile + SimProject) |
+| Asignaturas con simulador | **12** |
+| Encaje perfecto (aplicación directa) | **7** |
+| Encaje parcial (apoyo al curso) | **5** |
+| Simuladores distintos | **7** (6 del catálogo CompanyGame + SimProject) |
 | Rango de semestres | **4 – 7** |
+| Programas con al menos una asignatura confirmada | **6 de 7** (todos menos Electrónica) |
 
 ### Alcance por programa
 
 | Programa | Con simulador | Perfecto | Parcial | Simuladores | Semestres |
 |---|---:|---:|---:|---:|---|
-| Ingeniería Industrial | 6 | 4 | 2 | 6 | 4 – 6 |
-| Ingeniería de Sistemas | 3 | 3 | 0 | 3 | 7 |
-| Ingeniería Agroindustrial | 2 | 2 | 0 | 2 | 4 – 6 |
-| Ingeniería Biológica | 2 | 1 | 1 | 2 | 4 – 5 |
+| Ingeniería Industrial | 5 | 3 | 2 | 5 | 4 – 6 |
+| Ingeniería de Sistemas | 2 | 1 | 1 | 2 | 7 |
+| Ingeniería Agroindustrial | 2 | 1 | 1 | 2 | 4 – 6 |
+| Ingeniería Biológica | 1 | 1 | 0 | 1 | 5 |
 | Ingeniería Multimedia | 1 | 1 | 0 | 1 | 6 |
-| Ingeniería Biomédica | 1 | 1 | 0 | 1 | 7 |
-| Ingeniería Electrónica | 1 | 0 | 1 | 1 | 6 |
-| **Total Facultad** | **16** | **12** | **4** | **8** | **4 – 7** |
+| Ingeniería Biomédica | 1 | 0 | 1 | 1 | 7 |
+| Ingeniería Electrónica | **0** | 0 | 0 | 0 | — |
+| **Total Facultad** | **12** | **7** | **5** | **7** | **4 – 7** |
 
-### Las 16 filas, exactas, con su origen en el Excel
+### Las 12 filas finales, con su fuente de verificación
 
-| Programa | Sem. | Asignatura | Simulador | Origen de la fila |
+| Programa | Sem. | Asignatura | Simulador | Verificación de contenido |
 |---|---|---|---|---|
-| Industrial | 4 | Gestión Estratégica Organizacional | Business21 (N3-4) | Grado de ajuste = Encaje perfecto |
-| Industrial | 4 | Ingeniería de Costos | Corbatul (N3-4) | Grado de ajuste = Encaje parcial |
-| Industrial | 5 | Gestión de Operaciones | MilkFactory (N5) | Grado de ajuste = Encaje parcial |
-| Industrial | 5 | Investigación de Mercados | Focus (N5) | Grado de ajuste = Encaje perfecto |
-| Industrial | 6 | Diseño de Productos y Servicios | SimAgile | SimAgile = Alta |
-| Industrial | 6 | Gerencia de Proyectos de Ingeniería | SimProject | SimProject = Alta |
-| Sistemas | 7 | Arquitectura de Software | SimAgile | SimAgile = Alta |
-| Sistemas | 7 | Cátedra de Emprendimiento | FitnessGym (N3-4) | Grado de ajuste = Encaje perfecto |
-| Sistemas | 7 | Gestión de Proyectos de Software | SimProject | SimProject = Alta |
-| Multimedia | 6 | Gestión en Proyectos | SimProject | SimProject = Alta |
-| Agroindustrial | 4 | Mercadeo e Investigación de Mercados | Coffee Time (N1-2) | Grado de ajuste = Encaje perfecto |
-| Agroindustrial | 6 | Gerencia de Proyectos de Ingeniería | SimProject | SimProject = Alta |
-| Biomédica | 7 | Valoración de Proyectos | SimProject | SimProject = Alta |
-| Electrónica | 6 | Prototipado de Soluciones Tecnológicas | SimAgile | SimAgile = Media |
-| Biológica | 4 | Ingeniería de Costos | Corbatul (N3-4) | Grado de ajuste = Encaje parcial |
-| Biológica | 5 | Gerencia de Proyectos de Ingeniería | SimProject | SimProject = Alta |
+| Industrial | 5 | Gestión de Operaciones | MilkFactory (N5) | Contenido estándar de la disciplina — coincide con planeación de producción/capacidad/inventarios |
+| Industrial | 5 | Investigación de Mercados | Focus (N5) | Contenido estándar de la disciplina |
+| Industrial | 6 | Gerencia de Proyectos de Ingeniería | SimProject | Contenido estándar PMI/PMBOK, patrón consistente en Industrial/Agroindustrial/Biológica |
+| Industrial | 4 | Gestión Estratégica Organizacional | Business21 (N3-4) | Parcial: cubre la ejecución, no el marco analítico (FODA/Porter/BSC) que es el eje del curso |
+| Industrial | 4 | Ingeniería de Costos | Corbatul (N3-4) | Parcial: curso de costeo técnico; Corbatul aporta el componente de estructura de costos |
+| Sistemas | 7 | Gestión de Proyectos de Software | SimProject | Plan de estudios oficial USB Cali (SNIES 1349) + contenido estándar PMBOK |
+| Sistemas | 7 | Cátedra de Emprendimiento | FitnessGym (N3-4) | Plan de estudios oficial + contenido típico (Design Thinking, modelo de negocio) — bajada a parcial por instrucción del usuario pese a evidencia de "perfecto" |
+| Agroindustrial | 6 | Gerencia de Proyectos de Ingeniería | SimProject | Plan de estudios oficial USB Cali + coexistencia con "Ingeniería Económica" como curso separado (indicio de que no es evaluación financiera) |
+| Agroindustrial | 4 | Mercadeo e Investigación de Mercados | Coffee Time (N1-2) | Plan de estudios oficial + comparación con universidades colombianas — parcial porque el nombre también promete investigación de mercados, que Coffee Time no cubre |
+| Biológica | 5 | Gerencia de Proyectos de Ingeniería | SimProject | Plan de estudios oficial USB Cali (Res. 020628/2025) — materia transversal compartida con Industrial y Agroindustrial |
+| Multimedia | 6 | Gestión en Proyectos | SimProject | Plan de estudios oficial + PEP del programa: clasificada en el subcomponente administrativo, no en el audiovisual |
+| Biomédica | 7 | Valoración de Proyectos | Corbatul (N3-4) | Plan de estudios oficial (Res. MEN 8360/2020) + nomenclatura estándar colombiana ("Valoración de Proyectos" = evaluación financiera, no dirección de proyectos) |
 
-**9 de las 16 filas (56 %) usan SimAgile o SimProject**, no el catálogo CompanyGame — es la
-mayoría del encaje de esta Facultad.
+## Filas descartadas en la ronda 2 (con evidencia)
 
-## Filas excluidas por falta de dato — pendiente de completar en el Excel
+| Programa | Asignatura | Simulador descartado | Por qué |
+|---|---|---|---|
+| Industrial | Diseño de Productos y Servicios | SimAgile | Curso de diseño de producto físico/servicio (QFD, prototipado), no de desarrollo de software |
+| Sistemas | Arquitectura de Software | SimAgile | Curso de patrones/atributos de calidad arquitectónica, no del proceso ágil que simula SimAgile |
+| Biológica | Ingeniería de Costos | Corbatul | Curso técnico de 2 créditos; Corbatul (gerencia financiera integral) excede su alcance |
+| Electrónica | Prototipado de Soluciones Tecnológicas | SimAgile | Curso de prototipado de hardware/mecatrónica (por su ubicación curricular), sin evidencia de contenido de software ágil |
 
-Dos filas de **Ingeniería Electrónica** tienen `Grado de ajuste = "Encaje parcial"` pero la
-columna `Simulador CompanyGame que encaja` está vacía ("—"), y SimAgile/SimProject/SimVenture
-están en "Baja" — es decir, el Excel marca la asignatura como parcialmente encajada sin decir
-con qué producto. **No se inventó ningún producto para estas filas; se excluyeron del deck**:
+## Filas ya descartadas en la ronda 1 (sin cambio)
 
-- Semestre 8 · Práctica Profesional
-- Semestre 8 · Diseño de Ingeniería Electrónica II
+Dos filas de Electrónica (`Grado de ajuste = Encaje parcial` pero columna `Simulador CompanyGame
+que encaja` vacía en el Excel): Práctica Profesional y Diseño de Ingeniería Electrónica II. Con
+la eliminación adicional de Prototipado de Soluciones Tecnológicas en la ronda 2, **Electrónica
+queda en cero asignaturas** y su ficha se eliminó del deck.
 
-Si se completa la columna `Simulador CompanyGame que encaja` (M) para estas dos filas en el
-Excel, avisar para incorporarlas — subirían el total de Electrónica de 1 a 3 asignaturas y el
-total de la Facultad de 16 a 18.
+## Límite de esta verificación — para no sobrevender la certeza
 
-## Punto de partida del Excel — para no improvisar si preguntan por la cobertura
+Ningún agente de investigación encontró microcurrículos públicos detallados (unidad por unidad,
+con contenidos semanales) de la USB Cali — solo mallas curriculares oficiales (nombre, semestre,
+créditos) y, para el contenido temático, el patrón estándar de cada asignatura en la disciplina
+en Colombia. Las verificaciones "PERFECTO"/"PARCIAL" de este documento tienen distintos niveles
+de certeza:
 
-| | Industrial | Sistemas | Multimedia | Agroindustrial | Biomédica | Electrónica | Biológica | Total |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Espacios académicos | 58 | 64 | 58 | 58 | 61 | 58 | 55 | **412** |
-| Créditos | 144 | 160 | 142 | 144 | 156 | 143 | 144 | **1033** |
+- **Alta certeza** (plan oficial + contenido verificable de fuentes académicas serias): Gestión
+  de Proyectos de Software, Arquitectura de Software (descartada), Cátedra de Emprendimiento.
+- **Media-alta certeza** (plan oficial + inferencia razonada por nomenclatura y contexto
+  curricular, sin microcurrículo): Gerencia de Proyectos de Ingeniería (los tres programas),
+  Gestión en Proyectos, Valoración de Proyectos, Mercadeo e Investigación de Mercados,
+  Prototipado de Soluciones Tecnológicas (descartada), Ingeniería de Costos (Biológica,
+  descartada).
+- **Conocimiento general de la disciplina** (sin plan oficial verificado para esa asignatura
+  puntual): Gestión Estratégica Organizacional, Ingeniería de Costos (Industrial), Gestión de
+  Operaciones, Investigación de Mercados, Diseño de Productos y Servicios (descartada).
 
-**Grado de ajuste** (hoja Resumen Ejecutivo, sin SimAgile/SimProject): Encaje perfecto **4** ·
-Encaje parcial **5** · No encaja **365** · Por definir (electivas) **38**.
-
-**Compatibilidad Alta con SimVenture/SimAgile/SimProject** (hoja Resumen Ejecutivo): SimVenture
-**0** · SimAgile **3** · SimProject **6**. (SimAgile también tiene 1 caso en "Media": Prototipado
-de Soluciones Tecnológicas, Electrónica.)
-
-El deck nunca dice el total analizado (412) ni el porcentaje de cobertura (16 de 412 ≈ 4 %),
-siguiendo el criterio editorial de la plantilla: se argumenta desde lo que sí encaja, no desde
-el denominador. **Si preguntan por la cobertura, la respuesta honesta es este documento.**
-
-## Los dos desarrollos del slide "Lo que viene" (sin cambios frente a la versión anterior)
-
-Esta parte del Excel (hoja "Desarrollos Propios") **no se vio afectada** por la corrección de
-metodología — sus columnas nunca fueron narrativas de la misma forma que Q-V de las hojas de
-programa, y su contenido no cambió entre versiones del archivo.
-
-- **DP-04 · Cadena de Suministro — GlobalChain**: ya existe como producto real, resuelve Gestión
-  Cadena Abastecimiento (Ingeniería Industrial, semestre 6). Esa asignatura tiene, en su propia
-  hoja de programa, `Grado de ajuste = "No encaja"` (porque GlobalChain no es un simulador del
-  catálogo CompanyGame de 41 productos) — por eso no aparece como fila de ficha, solo en este
-  slide de desarrollos.
-- **DP-01 · Simulador de Planeación y Control de Operaciones**: en evaluación, 9 asignaturas en
-  3 programas (Industrial, Agroindustrial, Biológica), Prioridad 1 según la hoja.
-
-Por instrucción explícita del usuario, el deck deja solo estas dos tarjetas de las diez que trae
-la hoja "Desarrollos Propios" (quedan fuera DP-02, DP-03, DP-05, DP-06, DP-07, DP-09, DP-11,
-DP-12, DP-13 — no se mencionan en ningún punto del deck).
+**Si la Facultad puede compartir los microcurrículos reales** (mencionados por varios agentes
+como documentos internos en Moodle/ASIS, no públicos), vale la pena revalidar estas 12 filas
+antes de una reunión formal — especialmente las de "conocimiento general de la disciplina".
 
 ## Slides añadidos o eliminados respecto a la plantilla
 
-- **Añadido** — "Simuladores especializados para Ingeniería" (`slideOtrosSimuladores`), después
-  de la cartelera: SimAgile y SimProject.
-- **Eliminado** — el slide de "Asignaturas transversales": no hay ninguna asignatura que se
-  repita en los siete programas con encaje perfecto. El hallazgo más fuerte de esta versión
-  —Gerencia de Proyectos de Ingeniería con SimProject en tres programas (Industrial,
-  Agroindustrial, Biológica)— se cuenta en el acordeón del slide 3, sin forzar el slide dedicado
-  porque no cubre los siete programas.
-- **Añadido, en el lugar de Transversales** — "Lo que viene: más allá del catálogo actual"
-  (`slideDesarrollosPropios`), con las dos tarjetas DP-01 y DP-04/GlobalChain.
+- **Añadido** — "SimProject: el especialista en dirección de proyectos de ingeniería"
+  (`slideOtrosSimuladores`), después de la cartelera. Originalmente incluía también SimAgile;
+  se quitó en la ronda 2 al no encontrar ningún encaje real.
+- **Eliminado** — el slide de "Asignaturas transversales" (ninguna asignatura se repite en los
+  siete programas con encaje perfecto). El hallazgo de esta versión —SimProject en cuatro
+  programas— se cuenta en el acordeón del slide 3.
+- **Eliminado** — la ficha de Ingeniería Electrónica (0 asignaturas confirmadas tras la ronda 2).
+- **Añadido** — "Lo que viene: más allá del catálogo actual" (`slideDesarrollosPropios`), con
+  las tarjetas DP-01 (Planeación y Control de Operaciones, en evaluación) y DP-04/GlobalChain
+  (ya disponible). Esta hoja del Excel no se vio afectada por ninguna de las dos rondas de
+  corrección.
 - Slides fijos sin tocar: Portada, Cartelera, Los tres modelos de uso docente, Cierre.
-- Slide "Evidencia de aprendizaje": 6 simuladores CompanyGame de las fichas (Business21, Focus,
-  Corbatul, MilkFactory, FitnessGym, Coffee Time) + SimAgile + SimProject + GlobalChain (9 filas).
-
-## Fichas por programa — orden
-
-Ordenadas de más a menos asignaturas: Industrial (6), Sistemas (3), Agroindustrial (2),
-Biológica (2), Multimedia (1), Biomédica (1), Electrónica (1).
-
-Las fichas de Sistemas, Agroindustrial, Multimedia y Biomédica no tienen ninguna fila de "apoyo
-al curso" (0 asignaturas parciales) — la tabla de esa columna muestra una nota en cursiva en
-vez de quedar vacía sin explicación. La ficha de Electrónica es la única sin ninguna fila de
-"aplicación directa".
+- Slide "Evidencia de aprendizaje": 6 simuladores CompanyGame (Business21, Focus, Corbatul,
+  MilkFactory, FitnessGym, Coffee Time) + SimProject + GlobalChain (8 filas). SimAgile se quitó
+  de esta tabla también.
 
 ## Tono con el docente
 
 Se mantuvo el criterio de la plantilla: el simulador se integra al curso que el docente ya
-dicta, nunca al revés. Etiquetas "de aplicación directa" / "como apoyo al curso", sin lenguaje
-de esfuerzo o carga.
-
-## Salvedad pendiente de confirmar antes de la reunión
-
-⚠️ El Excel no indica a qué seccional de la USB corresponden estos siete programas (Bogotá,
-Medellín, Cali o Cartagena), ni trae SNIES para Multimedia, Agroindustrial ni Biomédica.
-Preguntar al contacto de la USB antes de presentar.
+dicta, nunca al revés. Etiquetas "de aplicación directa" / "como apoyo al curso".
 
 ## Repositorio público
 
 ⚠️ Si esta carpeta se sube a un repositorio público, revisar que este archivo no filtre nada que
-no deba salir de la casa: el denominador completo (412 asignaturas, 4 % de cobertura real), las
-filas excluidas por dato faltante, y los ocho desarrollos propios que se decidió no presentar.
+no deba salir de la casa: el denominador completo, las asignaturas descartadas con su
+justificación, y el hecho de que Electrónica quedó sin ninguna asignatura confirmada.
 
 ## Datos fijos del distribuidor
 
